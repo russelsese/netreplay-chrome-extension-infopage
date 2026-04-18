@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Release Notes | NetReplay Chrome Extension</title>
+  <meta name="description" content="Release notes and changelog for the NetReplay Chrome extension." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand: #2563eb;
+      --brand-dark: #1d4ed8;
+      --brand-light: #eff6ff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+      --section-bg: #f9fafb;
+      --radius: 12px;
+      --green: #16a34a;
+      --green-bg: #f0fdf4;
+      --green-border: #bbf7d0;
+      --amber: #d97706;
+      --amber-bg: #fffbeb;
+      --amber-border: #fde68a;
+      --blue: #2563eb;
+      --blue-bg: #eff6ff;
+      --blue-border: #bfdbfe;
+    }
+
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; }
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; height: 60px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1rem; color: var(--text); text-decoration: none; }
+    .nav-logo img { width: 28px; height: 28px; border-radius: 6px; }
+    .back-link { font-size: 0.875rem; color: var(--muted); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+    .back-link:hover { color: var(--text); text-decoration: none; }
+
+    .page-wrapper { max-width: 720px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    .page-label {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--brand); margin-bottom: 12px;
+    }
+    h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 36px; }
+
+    .release-entry { margin-bottom: 56px; }
+    .release-header {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+      padding-bottom: 16px; border-bottom: 2px solid var(--border);
+    }
+    .version-badge {
+      background: var(--brand); color: #fff;
+      font-weight: 700; font-size: 0.95rem;
+      padding: 4px 14px; border-radius: 20px;
+    }
+    .release-date { font-size: 0.875rem; color: var(--muted); }
+    .latest-tag {
+      background: var(--green-bg); color: var(--green);
+      border: 1px solid var(--green-border);
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; padding: 2px 10px; border-radius: 20px;
+    }
+
+    .change-group { margin-bottom: 20px; }
+    .change-group-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 3px 10px; border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .label-added { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+    .label-changed { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+    .label-fixed { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+    .label-notes { background: var(--section-bg); color: var(--muted); border: 1px solid var(--border); }
+
+    .change-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .change-list li {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: 0.95rem; color: var(--muted);
+    }
+    .change-list li::before { content: "–"; color: var(--border); flex-shrink: 0; margin-top: 1px; }
+
+    footer { border-top: 1px solid var(--border); padding: 32px 24px; }
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; gap: 16px;
+      align-items: center; justify-content: space-between;
+    }
+    .footer-left { font-size: 0.875rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 20px; font-size: 0.875rem; flex-wrap: wrap; }
+    .footer-links a { color: var(--muted); }
+    .footer-links a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" href="./index.html">
+        <img src="images/icon48.png" alt="NetReplay icon" />
+        NetReplay
+      </a>
+      <a class="back-link" href="./index.html">← Back to Home</a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="page-label">Changelog</div>
+    <h1>Release Notes</h1>
+
+    <!-- v1.0 -->
+    <div class="release-entry">
+      <div class="release-header">
+        <span class="version-badge">v1.0</span>
+        <span class="latest-tag">Latest</span>
+        <span class="release-date">April 2026</span>
+      </div>
+
+      <div class="change-group">
+        <div class="change-group-label label-added">✦ Added</div>
+        <ul class="change-list">
+          <li>Popup UI launched from the Chrome toolbar action icon</li>
+          <li>Full-page network capture via the Capture button — records all <code>fetch</code> and <code>XMLHttpRequest</code> calls</li>
+          <li>Request interception in <code>MAIN</code> world at <code>document_start</code> for maximum coverage</li>
+          <li>Request list panel embedded alongside any page showing URL, method, and status</li>
+          <li>Request detail view with full headers, request body, and formatted response body</li>
+          <li>One-click Replay — resends any captured request with identical headers and payload</li>
+          <li>Download response button — saves the response body to disk</li>
+          <li>Copy as cURL command — generates a ready-to-paste <code>curl</code> command for any request</li>
+          <li>Real-time status indicator showing capture state (active / idle)</li>
+          <li>NetReplay icon set at 16×16, 48×48, and 128×128 resolutions</li>
+        </ul>
+      </div>
+
+      <div class="change-group">
+        <div class="change-group-label label-changed">↻ Design</div>
+        <ul class="change-list">
+          <li>Clean dark panel theme with high-contrast request list for readability</li>
+          <li>Collapsible sections for request headers and response body</li>
+          <li>Monospace font for all technical values (URLs, headers, bodies)</li>
+        </ul>
+      </div>
+
+      <div class="change-group">
+        <div class="change-group-label label-notes">ℹ Notes</div>
+        <ul class="change-list">
+          <li>Requires Chrome 88 or later (Manifest V3 with content scripts)</li>
+          <li>Minimal permission footprint — only <code>activeTab</code> and <code>storage</code> required</li>
+          <li>All captured data remains local to your browser session — nothing is sent externally</li>
+          <li>WebSocket capture planned for a future release</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">Built by <a href="https://www.linkedin.com/in/russelsese/" target="_blank" rel="noopener">Russel Sese</a></div>
+      <div class="footer-links">
+        <a href="./support.html">Support</a>
+        <a href="./privacy.html">Privacy Policy</a>
+        <a href="./release-notes.html">Release Notes</a>
+        <a href="https://www.linkedin.com/in/russelsese/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

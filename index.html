@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NetReplay – Capture & Replay Network Requests</title>
+  <meta name="description" content="Capture every fetch & XHR request on any page. Inspect headers, view response bodies, and replay requests in one click." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand: #2563eb;
+      --brand-dark: #1d4ed8;
+      --brand-light: #eff6ff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+      --section-bg: #f9fafb;
+      --radius: 12px;
+    }
+
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; }
+
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1rem; color: var(--text); text-decoration: none; }
+    .nav-logo img { width: 28px; height: 28px; border-radius: 6px; }
+    .nav-links { display: flex; align-items: center; gap: 24px; font-size: 0.9rem; }
+    .nav-links a { color: var(--muted); font-weight: 500; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .btn-nav {
+      background: var(--brand); color: #fff !important; padding: 8px 18px;
+      border-radius: 8px; font-weight: 600; font-size: 0.875rem;
+    }
+    .btn-nav:hover { background: var(--brand-dark); text-decoration: none !important; }
+
+    /* HERO */
+    .hero {
+      max-width: 1080px; margin: 0 auto;
+      padding: 80px 24px 60px;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    .hero-badge {
+      display: inline-block; background: var(--brand-light); color: var(--brand);
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em;
+      padding: 4px 12px; border-radius: 20px; margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; line-height: 1.15;
+      letter-spacing: -0.02em; max-width: 700px; margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 1.125rem; color: var(--muted); max-width: 560px; margin-bottom: 36px;
+    }
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 60px; }
+    .btn-primary {
+      background: var(--brand); color: #fff; padding: 13px 26px;
+      border-radius: 9px; font-weight: 700; font-size: 0.95rem;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { background: var(--brand-dark); text-decoration: none; }
+    .btn-secondary {
+      background: var(--bg); color: var(--text); padding: 13px 26px;
+      border-radius: 9px; font-weight: 600; font-size: 0.95rem;
+      border: 1.5px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: #9ca3af; text-decoration: none; }
+
+    /* HERO SCREENSHOTS */
+    .hero-screenshots {
+      display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+      width: 100%;
+    }
+    .hero-screenshots img {
+      border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      max-width: 320px; width: 100%; height: auto; object-fit: cover;
+    }
+
+    /* FEATURES */
+    .section { padding: 80px 24px; }
+    .section-alt { background: var(--section-bg); }
+    .section-inner { max-width: 1080px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--brand); margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800;
+      letter-spacing: -0.01em; margin-bottom: 12px;
+    }
+    .section-sub { font-size: 1rem; color: var(--muted); max-width: 520px; margin-bottom: 52px; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 24px;
+    }
+    .feature-icon {
+      width: 44px; height: 44px; background: var(--brand-light);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 16px;
+    }
+    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+    /* SCREENSHOTS SECTION */
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .screenshot-item { display: flex; flex-direction: column; gap: 10px; }
+    .screenshot-item img {
+      border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      width: 100%; height: auto; object-fit: contain;
+    }
+    .screenshot-caption { font-size: 0.85rem; color: var(--muted); font-weight: 500; }
+
+    /* HOW IT WORKS */
+    .steps { display: flex; flex-direction: column; gap: 36px; max-width: 680px; }
+    .step { display: flex; gap: 24px; align-items: flex-start; }
+    .step-num {
+      flex-shrink: 0; width: 44px; height: 44px; background: var(--brand);
+      color: #fff; border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-weight: 800; font-size: 1.1rem;
+    }
+    .step-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+    .step-body p { font-size: 0.9rem; color: var(--muted); }
+
+    /* PRIVACY STRIP */
+    .privacy-strip {
+      display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;
+    }
+    .privacy-pill {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: 40px; padding: 12px 22px;
+      font-weight: 600; font-size: 0.9rem;
+    }
+    .privacy-pill span:first-child { font-size: 1.2rem; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+    }
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; gap: 16px;
+      align-items: center; justify-content: space-between;
+    }
+    .footer-left { font-size: 0.875rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 20px; font-size: 0.875rem; flex-wrap: wrap; }
+    .footer-links a { color: var(--muted); }
+    .footer-links a:hover { color: var(--text); }
+
+    @media (max-width: 600px) {
+      .nav-links .btn-nav { display: none; }
+      .hero { padding: 48px 16px 40px; }
+      .section { padding: 56px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" href="./index.html">
+        <img src="images/icon48.png" alt="NetReplay icon" />
+        NetReplay
+      </a>
+      <div class="nav-links">
+        <a href="./support.html">Support</a>
+        <a href="./privacy.html">Privacy</a>
+        <a class="btn-nav" href="https://chrome.google.com/webstore" target="_blank" rel="noopener">Add to Chrome</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section>
+    <div class="hero">
+      <span class="hero-badge">Chrome Extension</span>
+      <h1>Capture &amp; Replay Network Requests on Any Page</h1>
+      <p>Intercept every fetch &amp; XHR call, inspect request headers and response bodies, then replay them in one click — all without leaving the page.</p>
+      <div class="hero-ctas">
+        <a class="btn-primary" href="https://chrome.google.com/webstore" target="_blank" rel="noopener">
+          <img src="images/icon16.png" alt="" style="width:16px;height:16px;filter:brightness(10);" />
+          Add to Chrome — It's Free
+        </a>
+        <a class="btn-secondary" href="./release-notes.html">Release Notes</a>
+      </div>
+      <div class="hero-screenshots">
+        <img src="images/01-popup.png" alt="NetReplay popup" />
+        <img src="images/03-netreplay-capture.png" alt="NetReplay capture view" />
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section section-alt">
+    <div class="section-inner">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">Everything you need to inspect &amp; replay requests</h2>
+      <p class="section-sub">Built for developers and QA engineers who need to understand exactly what their pages are doing.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Capture All Requests</h3>
+          <p>Intercepts every <code>fetch</code> and <code>XMLHttpRequest</code> call the page makes, including headers, method, and request body.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Inspect Request Details</h3>
+          <p>View full request and response headers, status codes, and response body in a clean, readable panel.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">▶️</div>
+          <h3>One-Click Replay</h3>
+          <p>Replay any captured request instantly with the exact same headers and payload — no copy-pasting required.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⬇️</div>
+          <h3>Download Responses</h3>
+          <p>Save response bodies directly to disk for offline analysis, diffing, or sharing with teammates.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3>cURL Command Export</h3>
+          <p>Copy any captured request as a ready-to-paste <code>curl</code> command. Perfect for reproducing issues in the terminal.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Minimal Permissions</h3>
+          <p>Only requires <code>activeTab</code> and <code>storage</code> — no broad host permissions, no background data collection.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOTS -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-label">Screenshots</div>
+      <h2 class="section-title">See it in action</h2>
+      <p class="section-sub">From capture to replay to curl — everything at your fingertips.</p>
+      <div class="screenshots-grid">
+        <div class="screenshot-item">
+          <img src="images/02-embeded-in-page.png" alt="NetReplay embedded in page" />
+          <span class="screenshot-caption">Panel embedded in any page</span>
+        </div>
+        <div class="screenshot-item">
+          <img src="images/04-replay-download.png" alt="Replay and download" />
+          <span class="screenshot-caption">Replay requests &amp; download responses</span>
+        </div>
+        <div class="screenshot-item">
+          <img src="images/05-curl-command-copy.png" alt="cURL command copy" />
+          <span class="screenshot-caption">Copy as cURL command instantly</span>
+        </div>
+        <div class="screenshot-item">
+          <img src="images/06-response.png" alt="Response viewer" />
+          <span class="screenshot-caption">Formatted response body viewer</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section section-alt">
+    <div class="section-inner">
+      <div class="section-label">How It Works</div>
+      <h2 class="section-title" style="margin-bottom: 48px;">Up and running in seconds</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>Open Any Page</h3>
+            <p>Navigate to any website you want to inspect — a web app, API consumer, or any page that makes network requests.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>Click the NetReplay Icon</h3>
+            <p>Click the NetReplay toolbar icon to open the extension panel alongside the page. No DevTools required.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>Capture Requests</h3>
+            <p>Click <strong>Capture</strong> and interact with the page. NetReplay records every fetch &amp; XHR request in real time.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h3>Inspect, Replay &amp; Export</h3>
+            <p>Click any captured request to inspect headers and response. Hit <strong>Replay</strong> to resend it, or copy it as a curl command.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIVACY STRIP -->
+  <section class="section">
+    <div class="section-inner" style="text-align:center;">
+      <div class="section-label" style="justify-content:center;display:flex;">Privacy First</div>
+      <h2 class="section-title" style="margin-bottom: 40px;">Your data never leaves your browser</h2>
+      <div class="privacy-strip">
+        <div class="privacy-pill"><span>🚫</span> No ads</div>
+        <div class="privacy-pill"><span>🚫</span> No tracking</div>
+        <div class="privacy-pill"><span>🚫</span> No servers</div>
+        <div class="privacy-pill"><span>🚫</span> No sign-in</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">Built by <a href="https://www.linkedin.com/in/russelsese/" target="_blank" rel="noopener">Russel Sese</a></div>
+      <div class="footer-links">
+        <a href="./support.html">Support</a>
+        <a href="./privacy.html">Privacy Policy</a>
+        <a href="./release-notes.html">Release Notes</a>
+        <a href="https://www.linkedin.com/in/russelsese/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

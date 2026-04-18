@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support | NetReplay Chrome Extension</title>
+  <meta name="description" content="Get support for the NetReplay Chrome extension." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand: #2563eb;
+      --brand-dark: #1d4ed8;
+      --brand-light: #eff6ff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+      --section-bg: #f9fafb;
+      --radius: 12px;
+    }
+
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; }
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; height: 60px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1rem; color: var(--text); text-decoration: none; }
+    .nav-logo img { width: 28px; height: 28px; border-radius: 6px; }
+    .back-link { font-size: 0.875rem; color: var(--muted); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+    .back-link:hover { color: var(--text); text-decoration: none; }
+
+    .page-wrapper { max-width: 720px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    .page-label {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--brand); margin-bottom: 12px;
+    }
+    h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .lead { font-size: 1.05rem; color: var(--muted); margin-bottom: 40px; }
+
+    .card {
+      background: var(--section-bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px; margin-bottom: 24px;
+    }
+    .card h2 { font-size: 1rem; font-weight: 700; margin-bottom: 12px; }
+    .card p { font-size: 0.95rem; color: var(--muted); margin-bottom: 12px; }
+    .card p:last-child { margin-bottom: 0; }
+    .contact-item { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; margin-bottom: 10px; }
+    .contact-item:last-child { margin-bottom: 0; }
+    .contact-label { color: var(--muted); min-width: 70px; font-size: 0.875rem; }
+
+    footer { border-top: 1px solid var(--border); padding: 32px 24px; }
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; gap: 16px;
+      align-items: center; justify-content: space-between;
+    }
+    .footer-left { font-size: 0.875rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 20px; font-size: 0.875rem; flex-wrap: wrap; }
+    .footer-links a { color: var(--muted); }
+    .footer-links a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" href="./index.html">
+        <img src="images/icon48.png" alt="NetReplay icon" />
+        NetReplay
+      </a>
+      <a class="back-link" href="./index.html">← Back to Home</a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="page-label">Help &amp; Support</div>
+    <h1>Support</h1>
+    <p class="lead">Having an issue or a question about NetReplay? I'm happy to help. Reach out via email or LinkedIn and I'll get back to you as soon as possible.</p>
+
+    <div class="card">
+      <h2>Before You Reach Out</h2>
+      <p>For faster support, please include the following in your message:</p>
+      <ul style="margin: 8px 0 0 20px; font-size: 0.95rem; color: var(--muted); line-height: 1.8;">
+        <li>Your Chrome version (find it at <code>chrome://settings/help</code>)</li>
+        <li>The URL of the page where the issue occurred</li>
+        <li>A description of what you expected to happen vs. what actually happened</li>
+        <li>Any error messages you see in the extension panel</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Contact</h2>
+      <div class="contact-item">
+        <span class="contact-label">Developer</span>
+        <span>Russel Sese</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Email</span>
+        <a href="mailto:russel.sese@batchee.com">russel.sese@batchee.com</a>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">LinkedIn</span>
+        <a href="https://www.linkedin.com/in/russelsese/" target="_blank" rel="noopener">linkedin.com/in/russelsese</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Common Questions</h2>
+      <p><strong>Why aren't requests being captured?</strong><br />Make sure you click the Capture button before interacting with the page. Requests made before clicking Capture are not recorded.</p>
+      <p><strong>The replay returned a different response — why?</strong><br />Replayed requests run fresh against the server. Session tokens, cookies, or server state may have changed since the original request.</p>
+      <p><strong>Can I capture WebSocket messages?</strong><br />Version 1.0 captures <code>fetch</code> and <code>XMLHttpRequest</code> only. WebSocket support is planned for a future release.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">Built by <a href="https://www.linkedin.com/in/russelsese/" target="_blank" rel="noopener">Russel Sese</a></div>
+      <div class="footer-links">
+        <a href="./support.html">Support</a>
+        <a href="./privacy.html">Privacy Policy</a>
+        <a href="./release-notes.html">Release Notes</a>
+        <a href="https://www.linkedin.com/in/russelsese/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
